@@ -15,6 +15,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python digest.py
         env:
+          KHU_API_KEY: ${{ secrets.KHU_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
           OPENALEX_MAILTO: ${{ secrets.OPENALEX_MAILTO }}
@@ -25,4 +26,3 @@ jobs:
           git add docs
           git commit -m "digest $(date +%F)" || echo "no changes"
           git push
-
