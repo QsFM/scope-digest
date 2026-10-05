@@ -1,7 +1,7 @@
 {
  "2026-10-05": {
-  "ko": "효율 경쟁의 초점이 표본 선택과 전이 안정성으로 옮겨갔다",
-  "en": "The focus in efficiency has shifted to sample selection and transfer stability",
+  "ko": "설계 성능보다 검증 경계와 현실 전이가 중요해졌다",
+  "en": "Validation boundaries and real-world transfer now matter more than design performance",
   "has_en": true
  }
 }
