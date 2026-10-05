@@ -77,3 +77,8 @@ llm:                      # 키가 없으면 해당 provider 는 건너뜀. 둘 
   models: [gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite]   # Google 직접 호출용
   papers_per_topic: 8
   max_wait_seconds: 900             # 재시도 포함 전체 대기 한도. 넘으면 알고리즘 모드로 발행
+
+news:                     # 홈페이지(scope-lab) 소식 자동 추가
+  enabled: true
+  include_headline: false # true 면 한 줄 요약(헤드라인)도 공개 홈페이지에 노출. 기본은 제목+링크만
+  file: assets/js/weekly-news.js

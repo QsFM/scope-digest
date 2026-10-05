@@ -689,6 +689,38 @@ def publish(pages, head, pw):
         bad = [f for f in os.listdir(d) if f.endswith(".txt") or (f.endswith(".html") and "<!--scope-enc-->" not in open(os.path.join(d, f), encoding="utf-8").read())]
         if bad: sys.exit(f"평문 파일이 남아 있어 중단: {bad}")
 
+# ---------------------------------------------------------------- 홈페이지 소식 연동
+def push_news(head):
+    """홈페이지 저장소의 assets/js/weekly-news.js 에 이번 호 한 줄(제목+링크)을 추가한다. 실패해도 리포트 발행은 유지."""
+    repo, tok = os.environ.get("HOME_REPO", "").strip(), os.environ.get("HOME_REPO_TOKEN", "").strip()
+    N = CFG.get("news", {})
+    if not (N.get("enabled", True) and repo and tok): print("홈페이지 소식 연동 건너뜀 (HOME_REPO / HOME_REPO_TOKEN 없음)"); return
+    gh = os.environ.get("GITHUB_REPOSITORY", "")
+    base = (os.environ.get("PAGES_URL") or (f"https://{gh.split('/')[0]}.github.io/{gh.split('/')[1]}/" if "/" in gh else "")).rstrip("/") + "/"
+    if base == "/": print("PAGES_URL 을 알 수 없어 소식 연동을 건너뜀"); return
+    ko = f"SCOPE Weekly {today} · 주간 논문 리포트 (연구실 구성원 전용, 암호 필요)"
+    en = f"SCOPE Weekly {today} · Weekly paper digest (lab members only, password required)"
+    if N.get("include_headline", False) and head.get(""):
+        ko = f"SCOPE Weekly {today} · {head['']} (암호 필요)"; en = f"SCOPE Weekly {today} · {head.get('-en') or head['']} (password required)"
+    item = {"date": str(today), "url": f"{base}{today}.html", "text": {"ko": ko, "en": en}}
+    path = N.get("file", "assets/js/weekly-news.js"); branch = os.environ.get("HOME_BRANCH", "main")
+    api = f"https://api.github.com/repos/{repo}/contents/{path}"
+    H = {"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+    try:
+        r = requests.get(api, headers=H, params={"ref": branch}, timeout=30)
+        if r.status_code != 200: print("소식 연동 실패: 파일 읽기 HTTP", r.status_code, "(저장소 이름, 토큰 권한, 파일 경로 확인)"); return
+        j = r.json(); cur = base64.b64decode(j["content"]).decode("utf-8")
+        m = re.search(r"window\.WEEKLY_NEWS\s*=\s*(\[.*?\]);", cur, re.S)
+        items = json.loads(m.group(1)) if m and m.group(1).strip("[] \n") else []
+        items = [x for x in items if x.get("date") != item["date"]] + [item]
+        items.sort(key=lambda x: x["date"], reverse=True)
+        header = cur[:m.start()] if m else "/* SCOPE Weekly 자동 소식 */\n"
+        body = header + "window.WEEKLY_NEWS = " + json.dumps(items, ensure_ascii=False, indent=2) + ";\n"
+        pr = requests.put(api, headers=H, timeout=30, json={"message": f"SCOPE Weekly {today}", "content": base64.b64encode(body.encode("utf-8")).decode(), "sha": j["sha"], "branch": branch})
+        print("홈페이지 소식 연동", "성공" if pr.status_code in (200, 201) else f"실패 HTTP {pr.status_code}")
+    except Exception as e:
+        print("소식 연동 오류:", type(e).__name__)
+
 def run(dry=False):
     pw = None if dry else get_password()
     w, b = CFG["window_days"], CFG["baseline_days"]
@@ -703,6 +735,7 @@ def run(dry=False):
         print("preview.html / preview-en.html", len(cur), "papers")
     else:
         publish({"": (page, txt), "-en": (page_en, txt_en)}, {"": head, "-en": head_en}, pw)
+        push_news({"": head, "-en": head_en})
         print("published", len(cur), "papers", dict(STATUS), "encrypted" if pw else "PLAINTEXT")
 
 if __name__ == "__main__":
