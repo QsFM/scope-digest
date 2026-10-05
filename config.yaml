@@ -67,7 +67,10 @@ synonyms:
   hofm: factorization machine
   "quantum annealer": quantum annealing
 
-llm:                      # GEMINI_API_KEY(Secrets)가 없으면 자동으로 알고리즘 모드
+llm:                      # 키가 없으면 해당 provider 는 건너뜀. 둘 다 없거나 실패하면 알고리즘 모드로 발행
   enabled: true
-  models: [gemini-3.8-flash, gemini-3.7-flash, gemini-2.5-flash]
+  providers: [khu, gemini]          # 시도 순서. khu = ChatKHU API Gateway(KHU_API_KEY), gemini = Google 무료(GEMINI_API_KEY)
+  khu_models: [claude-sonnet-5, gemini-3.7-flash]   # ChatKHU 모델 id. 크레딧 차감량을 보고 조정 (GET /models/ 로 가능한 목록 확인)
+  models: [gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite]   # Google 직접 호출용
   papers_per_topic: 8
+  max_wait_seconds: 900             # 재시도 포함 전체 대기 한도. 넘으면 알고리즘 모드로 발행
