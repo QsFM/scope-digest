@@ -409,8 +409,8 @@ h1.headline{font:800 34px/1.35 "Noto Serif KR","Nanum Myeongjo",Georgia,serif;ma
 .lede{font-size:19px;color:var(--ink);border-left:3px solid var(--acc);padding:2px 0 2px 16px;margin:0 0 26px}
 .facts{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--sub);margin:0 0 8px}
 .facts b{display:block;font-size:20px;color:var(--ink);font-weight:700}
-.toc{font-size:14px;margin:26px 0 8px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--sub)}
-.toc a{margin-right:14px;white-space:nowrap}
+.toc{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;margin:26px 0 8px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--sub)}
+.toc a{white-space:normal}
 h2{font:700 24px/1.4 "Noto Serif KR",Georgia,serif;margin:56px 0 6px;letter-spacing:-.01em}
 .kicker{font-size:12px;letter-spacing:.14em;color:var(--acc);font-weight:700;margin:56px 0 0;text-transform:uppercase}
 .kicker+h2{margin-top:6px}
