@@ -1,0 +1,73 @@
+# ============ SCOPE Weekly 설정 ============
+window_days: 14        # 수집 기간(일). 목요일 발행 기준 직전 2주
+baseline_days: 90      # 급상승 키워드 비교용 이전 기간
+min_score: 1           # 키워드 일치 점수 하한 (제목 일치 3점, 초록 일치 1점). 잡음이 많으면 3으로 올림
+max_papers_per_topic: 12   # 주제당 목록에 싣는 최대 편수 (한 저널당 최대 3편)
+
+# journals: 저널 ISSN 목록 (SCIE 저널 중 해당 분야 상위권으로 직접 고른 것. JCR 순위 조회 결과가 아님).
+#           비워 두면([]) 저널 제한 없이 검색 (ML 방법론 주제용).
+topics:
+  Stochastic Optimization & Active Learning:
+    label: 확률적 최적화·능동학습 (ML 방법론)
+    keywords: [bayesian optimization, active learning, generative model, surrogate model, sample-efficient optimization, sparse data]
+    journals: []
+  Quantum Computing for Practical Applications:
+    label: 양자 컴퓨팅 응용
+    keywords: [quantum annealing, NISQ, QUBO, factorization machine, variational quantum algorithm, QAOA, quantum optimization, quantum machine learning]
+    journals:
+      - {name: npj Quantum Information, issn: 2056-6387}
+      - {name: PRX Quantum, issn: 2691-3399}
+      - {name: Quantum, issn: 2521-327X}
+      - {name: Quantum Science and Technology, issn: 2058-9565}
+      - {name: Physical Review Applied, issn: 2331-7019}
+      - {name: Quantum Machine Intelligence, issn: 2524-4906}
+      - {name: IEEE Transactions on Quantum Engineering, issn: 2689-1808}
+      - {name: Physical Review A, issn: 2469-9926}
+      - {name: Nature Communications, issn: 2041-1723}
+      - {name: Physical Review Research, issn: 2643-1564}
+  Photonics & Metasurface Design:
+    label: 포토닉스·메타표면·전자기 설계
+    keywords: [metasurface, inverse design, frequency selective surface, frequency selective rasorber, radiative cooling, RCWA, FDTD, transfer matrix, neural network electromagnetic, radome]
+    journals:
+      - {name: Nature Photonics, issn: 1749-4885}
+      - {name: "Light: Science & Applications", issn: 2047-7538}
+      - {name: Optica, issn: 2334-2536}
+      - {name: Laser & Photonics Reviews, issn: 1863-8880}
+      - {name: Nanophotonics, issn: 2192-8614}
+      - {name: ACS Photonics, issn: 2330-4022}
+      - {name: Advanced Optical Materials, issn: 2195-1071}
+      - {name: IEEE Transactions on Antennas and Propagation, issn: 0018-926X}
+      - {name: IEEE Transactions on Microwave Theory and Techniques, issn: 0018-9480}
+      - {name: Advanced Science, issn: 2198-3844}
+  Process Optimization & Sim-to-Real:
+    label: 공정 최적화·Sim-to-Real (배터리·산화물 반도체)
+    keywords: [sim-to-real, battery electrode optimization, SiOx anode, lithium-ion battery silicon anode, oxide semiconductor IGZO, process optimization machine learning, thin-film transistor, Bayesian optimization battery]
+    journals:
+      - {name: Nature Energy, issn: 2058-7546}
+      - {name: Joule, issn: 2542-4351}
+      - {name: Advanced Energy Materials, issn: 1614-6832}
+      - {name: Energy Storage Materials, issn: 2405-8297}
+      - {name: Advanced Science, issn: 2198-3844}
+      - {name: Advanced Materials, issn: 0935-9648}
+      - {name: Nano Energy, issn: 2211-2855}
+      - {name: Journal of Power Sources, issn: 0378-7753}
+      - {name: IEEE Electron Device Letters, issn: 0741-3106}
+      - {name: IEEE Transactions on Electron Devices, issn: 0018-9383}
+
+# arXiv 프리프린트는 ML 방법론 키워드만 (cs.LG, stat.ML)
+preprint:
+  enabled: true
+  ml_only_keywords: [bayesian optimization, active learning, factorization machine, surrogate model, QUBO, sim-to-real, differentiable physics, inverse design, physics-informed]
+  ml_only_categories: [cs.LG, stat.ML]
+
+synonyms:
+  rasorber: frequency selective rasorber
+  fsr: frequency selective rasorber
+  bo: bayesian optimization
+  hofm: factorization machine
+  "quantum annealer": quantum annealing
+
+llm:                      # GEMINI_API_KEY(Secrets)가 없으면 자동으로 알고리즘 모드
+  enabled: true
+  models: [gemini-3.8-flash, gemini-3.7-flash, gemini-2.5-flash]
+  papers_per_topic: 8
