@@ -1,0 +1,34 @@
+# 홈피(qsfm.github.io/scope-lab) 기준 연구주제. 수정하면 바로 반영됩니다.
+window_days: 14         # 수집 기간 (목요일 기준 직전 7일). 색인 지연 때문에 14 권장
+baseline_days: 90       # 급상승 키워드 비교용 이전 기간
+top_n_per_topic: 8
+min_relevance: 0.04     # TF-IDF 코사인 유사도 하한
+
+topics:
+  Stochastic Optimization & Active Learning:
+    keywords: [bayesian optimization, active learning, generative model, surrogate model, sparse data, sample-efficient optimization]
+  Quantum Computing for Practical Applications:
+    keywords: [quantum annealing, NISQ, QUBO, factorization machine, variational quantum algorithm, QAOA, quantum optimization, quantum machine learning]
+  Photonics & Metasurface Design:
+    keywords: [metasurface, inverse design photonics, differentiable physics, frequency selective surface, rasorber, radiative cooling, RCWA, FDTD, transfer matrix, neural network electromagnetic]
+  Process Optimization & Sim-to-Real:
+    keywords: [sim-to-real, battery electrode optimization, SiOx anode, oxide semiconductor IGZO, process optimization machine learning, thin-film multilayer optimization]
+
+# arXiv 프리프린트는 기계학습 방법론 키워드만 (cs.LG, stat.ML 등)
+preprint:
+  enabled: true
+  categories: [cs.LG, stat.ML, quant-ph, physics.optics]
+  ml_only_keywords: [bayesian optimization, active learning, factorization machine, surrogate model, QUBO, sim-to-real, differentiable physics, inverse design, physics-informed]
+  ml_only_categories: [cs.LG, stat.ML]   # 이 카테고리에 속한 것만 채택
+
+synonyms:   # 동의어를 한 토큰으로 통일
+  rasorber: frequency selective rasorber
+  fsr: frequency selective rasorber
+  bo: bayesian optimization
+  hofm: factorization machine
+  "quantum annealer": quantum annealing
+
+llm:                      # GEMINI_API_KEY(Secrets)가 없으면 자동으로 알고리즘 모드
+  enabled: true
+  models: [gemini-3.8-flash, gemini-3.7-flash, gemini-2.5-flash]   # 순서대로 시도
+  papers_per_topic: 6
