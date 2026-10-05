@@ -67,8 +67,11 @@ synonyms:
   hofm: factorization machine
   "quantum annealer": quantum annealing
 
+encrypt: true            # true 면 모든 페이지를 암호화(Secret PAGE_PASSWORD, 12자 이상). 암호가 없으면 발행을 중단
+
 llm:                      # 키가 없으면 해당 provider 는 건너뜀. 둘 다 없거나 실패하면 알고리즘 모드로 발행
   enabled: true
+  english: true                     # 한글 리포트를 영어로 번역해 -en 페이지도 만든다(LLM 호출 1회 추가)
   providers: [khu, gemini]          # 시도 순서. khu = ChatKHU API Gateway(KHU_API_KEY), gemini = Google 무료(GEMINI_API_KEY)
   khu_models: [gpt-5.6-sol, gemini-3.1-pro-preview]   # ChatKHU 모델 id. 크레딧 차감량을 보고 조정 (GET /models/ 로 가능한 목록 확인)
   models: [gemini-3.8-flash, gemini-3.7-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-3.5-flash-lite, gemini-3.1-flash-lite]   # Google 직접 호출용

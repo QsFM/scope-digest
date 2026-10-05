@@ -2,3 +2,4 @@ requests
 pyyaml
 scikit-learn
 numpy
+cryptography>=42
