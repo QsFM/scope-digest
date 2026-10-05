@@ -1,0 +1,52 @@
+SCOPE WEEKLY 2026-10-05
+
+이번 호: 논문 201편, 4개 분야
+
+## Stochastic Optimization & Active Learning (Stochastic Optimization & Active Learning, 157편)
+이번 기간 이 분야에서 157편이 수집됐다. 많이 나온 곳은 arXiv (프리프린트)(12편), Ocean Engineering(3편), Reliability Engineering & System Safety(3편)이다. 제목과 초록에 자주 나온 표현은 learning, optimization, surrogate, model, active이다. 연구분야와 가장 가까운 논문은 "Reliability analysis of the world's longest-span CFST arch bridge using an interval-focused active-learning surrogate model"이다 [P1].
+
+## Quantum Computing for Practical Applications (Quantum Computing for Practical Applications, 7편)
+이번 기간 이 분야에서 7편이 수집됐다. 많이 나온 곳은 Quantum Science and Technology(2편), Quantum Machine Intelligence(2편), Advanced Science(1편)이다. 제목과 초록에 자주 나온 표현은 quantum, models, learning, machine, data이다. 연구분야와 가장 가까운 논문은 "Potential of multi-anomalies detection using quantum machine learning"이다 [P13].
+
+## Photonics & Metasurface Design (Photonics & Metasurface Design, 31편)
+이번 기간 이 분야에서 31편이 수집됐다. 많이 나온 곳은 Laser & Photonics Review(12편), Advanced Optical Materials(7편), ACS Photonics(5편)이다. 제목과 초록에 자주 나온 표현은 metasurface, optical, high, phase, polarization이다. 연구분야와 가장 가까운 논문은 "Deep Reinforcement Learning Inverse Design of Dielectric Metasurfaces Supporting Dual Quasi‐BIC Resonances"이다 [P20].
+
+## Process Optimization & Sim-to-Real (Process Optimization & Sim-to-Real, 6편)
+이번 기간 이 분야에서 6편이 수집됐다. 많이 나온 곳은 arXiv (프리프린트)(5편), Advanced Optical Materials(1편)이다. 제목과 초록에 자주 나온 표현은 state, learning, training, expert, task이다. 연구분야와 가장 가까운 논문은 "Autonomous Robotic Navigation for Endovascular Brain-Computer Interface Access"이다 [P32].
+
+## 논문 목록
+[1] Reliability analysis of the world's longest-span CFST arch bridge using an interval-focused active-learning surrogate model | Structures | 2026-10-03 | https://doi.org/10.1016/j.istruc.2026.113125
+[2] Active learning-driven surrogate modeling for fatigue life prediction of LPBF hastelloy-X using defect-informed finite element analysis | Progress in Additive Manufacturing | 2026-09-27 | https://doi.org/10.1007/s40964-026-01936-w
+[3] An Active Learning Method Based on Bagging and Applied to Surrogate Modelling | Image Processing On Line | 2026-09-23 | https://doi.org/10.5201/ipol.2026.514
+[4] Reliability analysis with parallel active-learning surrogate modeling: Application to girder bridge overturning under extreme vehicle loads | Engineering Structures | 2026-09-23 | https://doi.org/10.1016/j.engstruct.2026.123796
+[5] Physics consistent conditional flow matching model as a plasma physics surrogate model | Machine Learning Science and Technology | 2026-10-01 | https://doi.org/10.1088/2632-2153/aeaf46
+[6] An Active Learning Framework for PFAS-Free Surfactant Discovery in Firefighting Foams | ACS Omega | 2026-09-30 | https://doi.org/10.1021/acsomega.6c07702
+[7] Active Learning For Tractable and Reproducible Pulsed Laser Deposition | Advanced Functional Materials | 2026-09-29 | https://doi.org/10.1002/adfm.78266
+[8] BayesSeg: A Bayesian Optimization Framework for State Segmentation of Electricity Consumption Time Series | Energies | 2026-09-22 | https://doi.org/10.3390/en19194484
+[9] Dual-Prior-Constrained Temporal Inversion and FNO Surrogate-Model-Driven Coordinated Optimization of Drilling Engineering Parameters | Processes | 2026-09-22 | https://doi.org/10.3390/pr14193036
+[10] Agentic High-Dimensional Bayesian Optimization with Hypothesis- and Evidence-Guided Search | arXiv (프리프린트) | 2026-09-28 | http://arxiv.org/abs/2609.34281v1
+[11] Bayesian model updating via streamlined Bayesian active learning cubature | Mechanical Systems and Signal Processing | 2026-10-04 | https://doi.org/10.1016/j.ymssp.2026.114995
+[12] TCM-Complexity: a complexity-aware hybrid active learning framework for drug–target interaction prediction | BMC Bioinformatics | 2026-10-03 | https://doi.org/10.1186/s12859-026-06684-w
+[13] Potential of multi-anomalies detection using quantum machine learning | Quantum Machine Intelligence | 2026-10-02 | https://doi.org/10.1007/s42484-026-00448-8
+[14] Encoding Numerical Data for Generative Quantum Machine Learning | Quantum Science and Technology | 2026-10-02 | https://doi.org/10.1088/2058-9565/aeaf7e
+[15] Dynamic depth quantum approximate optimization algorithm for solving constrained shortest path problem | Quantum Machine Intelligence | 2026-09-22 | https://doi.org/10.1007/s42484-026-00442-0
+[16] Q‐LEAP: Millisecond Hyperdimensional Optimization for Full‐Spectrum Optical Metamaterials | Advanced Science | 2026-09-28 | https://doi.org/10.1002/advs.78032
+[17] Compositional Quantum Heuristics for Max-Clique Detection | Quantum Science and Technology | 2026-10-02 | https://doi.org/10.1088/2058-9565/aeaf7b
+[18] Complex-valued Quantum Neural Networks | npj Quantum Information | 2026-09-23 | https://doi.org/10.1038/s41534-026-01369-x
+[19] Noise-enhanced quantum kernels on analog quantum computers for estimating the non-Markovianity from sparse temporal data | Scientific Reports | 2026-09-28 | https://doi.org/10.1038/s41598-026-66035-w
+[20] Deep Reinforcement Learning Inverse Design of Dielectric Metasurfaces Supporting Dual Quasi‐BIC Resonances | Nanophotonics | 2026-09-29 | https://doi.org/10.1002/nap2.70307
+[21] Inverse‐Designed Superchiral Hot Spot in Dielectric Meta‐Cavity Toward Ultra‐Compact Enantioselective Detection | Advanced Optical Materials | 2026-09-29 | https://doi.org/10.1002/adom.71846
+[22] Metasurface Structural Color: From Fundamentals to Applications in Next‐Generation Displays | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72008
+[23] Nonlocal Leaky Mode Metasurfaces for Mode‐, Angle‐, and Polarization‐Multiplexed Holography With Thermal Light | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72007
+[24] Quantifying the Minimal Stable Footprint of Nanophotonic Inverse Design via Geometric Phase Sensitivity | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72010
+[25] Nonlocal Reflectarray Metasurfaces with High-Efficiency Spin-Dependent Deflection | ACS Photonics | 2026-10-02 | https://doi.org/10.1021/acsphotonics.6c00612
+[26] Vectorial Complex‐Amplitude Holography and Dual‐Gray Nano‐Printing via Synthesis Metasurfaces | Advanced Optical Materials | 2026-09-28 | https://doi.org/10.1002/adom.71867
+[27] Wide Angular Range Direction‐of‐Arrival Estimation Based on Diffractive Neural Network Integrated Stacked Intelligent Metasurfaces | Advanced Optical Materials | 2026-09-27 | https://doi.org/10.1002/adom.71870
+[28] Architected Spatially Deterministic Multiscale Phase Segregation in Block Copolymer Composites for Augmented Radiative Cooling | Advanced Science | 2026-09-27 | https://doi.org/10.1002/advs.77913
+[29] Artificial Intelligence‐Driven Inverse Design of Singlet Fission Candidates in the Acene family | Advanced Science | 2026-09-27 | https://doi.org/10.1002/advs.76828
+[30] Miniaturized Full-Stokes Spectrometers Based on Low-Correlation Metasurface Array | ACS Photonics | 2026-09-26 | https://doi.org/10.1021/acsphotonics.6c01928
+[31] Wavefront-Engineered Pd Metasurface for Spectrometer-Free Single-Point Photonic Hydrogen Readout | ACS Photonics | 2026-09-25 | https://doi.org/10.1021/acsphotonics.6c01768
+[32] Autonomous Robotic Navigation for Endovascular Brain-Computer Interface Access | arXiv (프리프린트) | 2026-10-02 | http://arxiv.org/abs/2610.03537v1
+[33] The Domain Is a Residue: Adapting Self-Supervised Features, Not Generators | arXiv (프리프린트) | 2026-09-29 | http://arxiv.org/abs/2609.37330v1
+[34] Differentiating Bisimulation Metrics: A Framework for Parametric Markov Chain Fitting via Bicausal Optimal Transport | arXiv (프리프린트) | 2026-09-29 | http://arxiv.org/abs/2609.37239v1
+[35] Visible‐Blind Near‐Infrared Organic Vision Sensors for Imaging in Adverse Environmental Conditions | Advanced Optical Materials | 2026-09-25 | https://doi.org/10.1002/adom.71858
