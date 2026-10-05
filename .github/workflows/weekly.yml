@@ -20,6 +20,8 @@ jobs:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
           OPENALEX_MAILTO: ${{ secrets.OPENALEX_MAILTO }}
           PAGE_PASSWORD: ${{ secrets.PAGE_PASSWORD }}
+          HOME_REPO: ${{ secrets.HOME_REPO }}
+          HOME_REPO_TOKEN: ${{ secrets.HOME_REPO_TOKEN }}
       - name: Commit digest
         run: |
           git config user.name "scope-digest-bot"
