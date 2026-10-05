@@ -266,43 +266,89 @@ def parse_json(txt):
         if m: return json.loads(m.group(0))
         raise
 
+KHU_BASE = "https://factchat-cloud.mindlogic.ai/v1/gateway"
+
+def _mask(msg, *secrets):
+    msg = re.sub(r"AIza[0-9A-Za-z_\-]+", "***", str(msg))
+    for k in secrets:
+        if k and len(k) > 6: msg = msg.replace(k, "***")
+    return msg[:200]
+
+def _post_with_retry(label, url, headers, payload, secrets, errs, timeout=300):
+    """(응답 JSON | None) 반환. 과부하 계열은 30/60/120초 간격으로 재시도, 그 외 오류는 즉시 포기."""
+    for attempt in range(4):
+        try:
+            r = requests.post(url, headers=headers, json=payload, timeout=timeout)
+        except Exception as e:
+            errs.append(f"{label}: {type(e).__name__} {_mask(e, *secrets)[:80]}"); print("llm fail", label, type(e).__name__); return None
+        if r.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+            wait = (30, 60, 120)[attempt]; print("llm", label, r.status_code, f"재시도 {attempt+1}/3, {wait}초 대기"); time.sleep(wait); continue
+        if not r.ok:
+            try:
+                j = r.json(); m = j.get("error") or j.get("detail") or j
+                if isinstance(m, dict): m = m.get("message", m)
+            except Exception: m = r.text[:120]
+            hint = {401: " (키 오류)", 402: " (크레딧 소진)", 403: " (권한/모델 접근 불가 또는 무료 모델)", 404: " (모델명 오류)"}.get(r.status_code, "")
+            errs.append(f"{label}: HTTP {r.status_code}{hint} {_mask(m, *secrets)[:120]}"); print("llm", label, r.status_code, _mask(m, *secrets)[:120]); return None
+        try: return r.json()
+        except Exception: errs.append(f"{label}: JSON 아닌 응답"); return None
+    return None
+
+def _khu(model, prompt, key, errs):
+    j = _post_with_retry(f"khu/{model}", f"{KHU_BASE}/chat/completions/",
+        {"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+        {"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": 16000}, [key], errs)
+    if not j: return None
+    try: return j["choices"][0]["message"]["content"] or ""
+    except Exception: errs.append(f"khu/{model}: 응답 형식 불일치"); return ""
+
+def _gemini(model, prompt, key, errs):
+    j = _post_with_retry(f"gemini/{model}", f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+        {"x-goog-api-key": key, "Content-Type": "application/json"},
+        {"contents": [{"parts": [{"text": prompt}]}],
+         "generationConfig": {"responseMimeType": "application/json", "temperature": 0.5, "maxOutputTokens": 16000}}, [key], errs, 240)
+    if not j: return None
+    cand = (j.get("candidates") or [{}])[0]
+    return "".join(x.get("text", "") for x in cand.get("content", {}).get("parts", []))
+
+def khu_credits(key):
+    """잔액 조회(실패해도 무시). 이번 호의 크레딧 사용량을 로그에서 비교할 수 있게 한다."""
+    try:
+        r = requests.get(f"{KHU_BASE}/credits/", headers={"Authorization": f"Bearer {key}"}, timeout=30)
+        return _mask(r.text, key)[:150] if r.ok else f"HTTP {r.status_code}"
+    except Exception: return "조회 실패"
+
 def call_llm(papers, rs, gp):
-    """성공하면 결과를, 실패하면 None을 돌려주고 STATUS['llm']에 원인(키 값은 제외)을 남긴다."""
-    L = CFG.get("llm", {}); key = (os.environ.get("GEMINI_API_KEY") or "").strip()
+    """provider 순서(khu -> gemini)대로 시도. 성공하면 결과, 실패하면 None. 실패 원인은 STATUS['llm'] (키 값 제외)."""
+    L = CFG.get("llm", {})
+    keys = {"khu": (os.environ.get("KHU_API_KEY") or "").strip(), "gemini": (os.environ.get("GEMINI_API_KEY") or "").strip()}
     if not L.get("enabled", True): STATUS["llm"] = "config.yaml에서 llm.enabled 가 꺼져 있음"; return None
-    if not key: STATUS["llm"] = "GEMINI_API_KEY 가 워크플로에 전달되지 않음 (Secret 이름 오타, Environment secrets 에 등록, weekly.yml 의 env 줄 누락 중 하나)"; return None
+    order = [p for p in L.get("providers", ["khu", "gemini"]) if keys.get(p)]
+    if not order: STATUS["llm"] = "KHU_API_KEY, GEMINI_API_KEY 모두 워크플로에 전달되지 않음 (Secret 이름 오타, Environment secrets 등록, weekly.yml env 줄 누락 중 하나)"; return None
     if not papers: STATUS["llm"] = "수집된 논문이 0편"; return None
     ids = pick_for_llm(papers)
     lines = [f"[{k}] 분야={p['topic']} | 저널={p['venue']} | {p['title']} :: {' '.join(re.split(r'(?<=[.!?]) ', p['abstract'])[:5])[:800]}" for k, p in ids.items()]
     lab = "; ".join(f"{n} ({', '.join(v['keywords'][:5])})" for n, v in CFG["topics"].items())
     prompt = PROMPT.format(lab=lab, stats=make_stats(papers, rs, gp), papers="\n".join(lines))
-    errs = []
-    for model in L.get("models", ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-2.5-flash"]):
-        for attempt in range(2):
+    errs = []; t0 = time.time(); budget = L.get("max_wait_seconds", 900)
+    for prov in order:
+        models = L.get(f"{prov}_models") or (L.get("models") if prov == "gemini" else None) or []
+        if prov == "khu": print("khu 크레딧(호출 전):", khu_credits(keys["khu"]))
+        for model in models:
+            if time.time() - t0 > budget: errs.append(f"{prov}/{model}: 전체 대기 한도({budget}초) 초과로 건너뜀"); continue
             try:
-                r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                    headers={"x-goog-api-key": key, "Content-Type": "application/json"}, timeout=240,
-                    json={"contents": [{"parts": [{"text": prompt}]}],
-                          "generationConfig": {"responseMimeType": "application/json", "temperature": 0.5, "maxOutputTokens": 16000}})
-                if r.status_code in (429, 500, 503) and attempt == 0:
-                    time.sleep(20); continue
-                if not r.ok:
-                    msg = ""
-                    try: msg = r.json().get("error", {}).get("message", "")
-                    except Exception: pass
-                    msg = re.sub(r"AIza[0-9A-Za-z_\-]+", "***", msg)[:160]
-                    errs.append(f"{model}: HTTP {r.status_code} {msg}"); print("llm", model, r.status_code, msg); break
-                j = r.json(); cand = (j.get("candidates") or [{}])[0]
-                txt = "".join(x.get("text", "") for x in cand.get("content", {}).get("parts", []))
-                if not txt:
-                    errs.append(f"{model}: 빈 응답 ({cand.get('finishReason') or j.get('promptFeedback')})"); break
+                txt = (_khu if prov == "khu" else _gemini)(model, prompt, keys[prov], errs)
+                if txt is None: 
+                    if any("HTTP 401" in e or "HTTP 402" in e for e in errs[-1:]): break   # 키/크레딧 문제는 같은 provider 의 다른 모델도 동일
+                    continue
+                if not txt.strip(): errs.append(f"{prov}/{model}: 빈 응답"); continue
                 data = parse_json(txt)
-                if not isinstance(data, dict) or not data.get("sectors"):
-                    errs.append(f"{model}: 응답 형식 불일치"); break
+                if not isinstance(data, dict) or not data.get("sectors"): errs.append(f"{prov}/{model}: 응답 형식 불일치"); continue
                 STATUS["llm"] = "ok"
-                return dict(model=model, data=data, ids=ids)
+                if prov == "khu": print("khu 크레딧(호출 후):", khu_credits(keys["khu"]))
+                return dict(model=f"{prov}/{model}", data=data, ids=ids)
             except Exception as e:
-                errs.append(f"{model}: {type(e).__name__} {str(e)[:80]}"); print("llm fail", model, type(e).__name__, str(e)[:120]); break
+                errs.append(f"{prov}/{model}: {type(e).__name__} {_mask(e, *keys.values())[:80]}"); print("llm fail", prov, model, type(e).__name__)
     STATUS["llm"] = " | ".join(errs) or "원인 불명"
     return None
 
