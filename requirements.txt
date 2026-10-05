@@ -1,4 +1,0 @@
-requests
-pyyaml
-scikit-learn
-numpy
