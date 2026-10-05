@@ -10,6 +10,7 @@
 ## 설정 (1회)
 1. Settings → Actions → General → Workflow permissions → Read and write
 2. Settings → Secrets and variables → Actions → New repository secret
+   - `KHU_API_KEY` : ChatKHU 로그인 → 좌측 하단 API Gateway → API 키 생성 (선택. 호출 크레딧은 본인 계정에서 차감)
    - `GEMINI_API_KEY` : aistudio.google.com/apikey 에서 무료 발급 (서술형 리포트에 필요)
    - `OPENALEX_API_KEY` : openalex.org/settings/api 에서 무료 발급 (수집 안정화)
 3. Actions → weekly-digest → Run workflow (요일 무관, 즉시 실행)
@@ -22,3 +23,8 @@
 - `llm.models` : 시도할 Gemini 모델 순서
 
 로컬 실행: `pip install -r requirements.txt && python digest.py` (`--dry-run` 이면 preview.html만 생성)
+
+## LLM 순서
+`config.yaml`의 `llm.providers`(기본 khu → gemini). KHU 키가 없거나 실패(크레딧 소진 등)하면 Gemini로, 둘 다 안 되면 알고리즘 모드로 발행합니다.
+실패 원인은 페이지 상단 안내에 표시됩니다(키 값은 표시되지 않음). ChatKHU 모델은 `llm.khu_models`에서 바꿉니다.
+실행 로그의 `khu 크레딧(호출 전/후)` 줄로 1회 사용량을 가늠할 수 있습니다(잔액 조회가 지원될 때).
