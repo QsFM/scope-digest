@@ -1,0 +1,108 @@
+SCOPE WEEKLY 2026-10-05
+
+설계보다 표본·표현·검증의 연결이 성능을 가른다
+
+이번 호의 핵심은 표본 선택과 표현 설계다. 비싼 계산을 대신하는 대리모형도 이 두 요소에 좌우된다.[1][10] 우리 연구는 최적화 점수보다 실제 검증까지 이어지는 고리를 먼저 설계해야 한다.[4][26]
+
+## 총평
+최근 14일 동안 203편이 모였다. 능동학습은 32편, 베이지안 최적화는 33편에서 급상승 표현으로 잡혔다. 공통 흐름은 표본 수 확대보다 표본의 쓰임을 따지는 쪽이다. 재료 탐색과 구조 안전성 연구도 중요한 구간을 골라 계산했다.[1][6] 원하는 성능에서 구조를 거꾸로 찾는 역설계도 검증 절차를 강조한다.[4]
+
+분야별 온도 차는 크다. 확률 최적화 분야는 159편이지만 양자 분야는 7편이다. 광소자 분야는 31편으로 설계법과 물리 구조가 함께 늘었다. 반면 공정과 모의-현실 전이는 6편이며 그중 5편이 프리프린트다. 능동학습과 게이트형 양자 계산의 교차 연구도 2편에 그쳤다. 이 공백을 메우려면 자료 표현과 모의-현실 차이를 함께 다뤄야 한다.[10][26]
+
+## 능동학습은 전체 정확도보다 중요한 구간을 겨냥한다 (Stochastic Optimization & Active Learning, 159편)
+능동학습은 정보가 큰 표본을 골라 계산량을 줄인다. P1은 실패와 임계 구간에 초점을 둔 대리모형을 제안했다.[1] P3은 비싼 동적 해석에 병렬 능동학습을 붙였다.[3] 두 연구는 균일한 정확도가 늘 최선은 아님을 보인다.[1][3]
+
+적용 범위도 재료와 공정으로 넓어졌다. P6은 분자 그래프의 숨은 표현에서 계면활성제를 골랐다.[6] P7은 박막 성장 조건과 불순물 정보를 함께 썼다.[7] P5는 지배 방정식이 없어도 흐름 생성모형을 대리모형으로 썼다.[5]
+
+반면 탐색과 활용의 균형은 여전히 불안정하다.[2] 생성 후보가 실제 검증을 통과하는지도 별도 문제다.[4]
+
+지켜볼 점: 중요 구간의 정확도와 전체 탐색 범위를 함께 재는 기준을 지켜봐야 한다.
+
+## 양자 최적화의 병목은 회로보다 표현과 검증에 있다 (Quantum Computing for Practical Applications, 7편)
+양자 연구는 고정된 회로 설계를 벗어나고 있다. P11은 수렴 상태에 맞춰 회로 깊이를 늘렸다.[11] P13은 작은 그래프에서 배운 모형을 재사용했다.[13] 이는 학습이 멈추는 문제를 구조 분할로 피하려는 접근이다.[13]
+
+하지만 자료 부호화가 새 병목으로 떠올랐다. P10은 연속값을 이진값으로 바꾸면 가짜 상관이 생긴다고 지적했다.[10] P9도 양자 커널이 고전 커널보다 나은 조건을 따로 살폈다.[9] P15에서는 조절된 잡음이 희소 시계열 추정을 돕기도 했다.[15]
+
+P12는 인수분해 기계와 양자 어닐링을 광학 구조 탐색에 묶었다.[12] 다만 제한된 7편만으로 일반 우위를 말하기는 어렵다.
+
+지켜볼 점: 같은 자료와 예산에서 고전 해법을 앞서는 조건이 재현되는지 봐야 한다.
+
+## 역설계는 성능 경쟁에서 크기와 강건성 경쟁으로 옮겨간다 (Photonics & Metasurface Design, 31편)
+광소자 역설계는 복잡한 공진을 직접 다루기 시작했다. P16은 강화학습으로 결합된 준결합 공진을 설계했다.[16] P17은 단계별 역설계로 강한 키랄 장점을 찾았다.[17] 두 연구는 여러 목표가 얽힌 공간을 겨냥한다.[16][17]
+
+이제 설계 크기 자체도 최적화 대상이다. P20은 위상 민감도로 안정적인 최소 설계 영역을 가렸다.[20] P21은 비국소 공진과 거울 구조를 묶어 효율 저하를 줄였다.[21] P19는 열광원에서도 홀로그램 채널을 나눴다.[19] P23은 검출기 조합 부호로 넓은 입사각을 구분했다.[23]
+
+남은 문제는 제작 오차와 동적 조절, 대량 제작의 균형이다.[16][18]
+
+지켜볼 점: 최소 설계 영역이 제작 오차와 실제 측정에서도 유지되는지 확인해야 한다.
+
+## 모의-현실 전이는 생성기보다 상태 표현을 고치는 쪽으로 간다 (Process Optimization & Sim-to-Real, 6편)
+모의-현실 전이는 모의 환경과 실제 차이를 줄이는 일이다. 이번 묶음은 공정 최적화보다 전이 방법에 치우쳤다. P24는 제한된 해부 구조를 늘려 로봇 제어기를 학습했다.[24] 이어 보지 않은 구조와 시험관 환경에서 이동을 평가했다.[24]
+
+P25는 생성기 대신 자기지도 특징의 잔여 정보를 고쳤다.[25] P26은 순차 과정의 차이를 재는 운송 거리를 미분 가능하게 만들었다.[26] P27은 빠른 광학 선별로 적외선 감지층을 골랐다.[27] 이들은 표현 수정과 목적함수 설계를 전이의 핵심으로 본다.[25][26][27]
+
+다만 배터리, SiOx 음극, IGZO를 직접 다룬 논문은 없었다.
+
+지켜볼 점: 전이 거리의 감소가 실제 공정 수율과 이어지는지 살펴야 한다.
+
+## 미래 연구 제안
+* 중요 구간 중심의 공정 모의-현실 보정 (새로움 4/5)
+  공정 전이는 전체 오차보다 불량 경계의 오차가 중요하다.
+  P1은 실패와 임계 구간에 표본을 집중했다.[1] P26은 순차 과정 사이의 차이를 미분 가능한 거리로 만들었다.[26] 두 방법을 묶어 전지나 IGZO 공정의 경계 조건을 먼저 보정할 수 있다.
+  첫 실험: 간단한 공정 모형에서 임계 구간 표본 선택법을 비교한다.
+  위험: 임계 구간 정의가 틀리면 표본이 한쪽으로 몰릴 수 있다.
+
+* 최소 크기 제약을 넣은 양자 메타표면 탐색 (새로움 4/5)
+  광학 성능만 높이면 구조가 커지고 제작이 어려워질 수 있다.
+  P12는 양자 어닐링으로 광학 구조를 탐색했다.[12] P20은 안정적인 최소 설계 영역을 찾는 기준을 제시했다.[20] 이 기준을 인수분해 기계의 목적값에 넣는 방안을 시험할 수 있다.
+  첫 실험: 기존 메타표면 자료로 성능과 크기를 함께 맞추는 모형을 만든다.
+  위험: 크기 기준이 이산 양자 변수와 잘 맞지 않을 수 있다.
+
+* 연속 잠재공간을 거치는 양자 후보 생성 (새로움 3/5)
+  연속 자료의 이진 부호화는 원래 없던 상관을 만들 수 있다.
+  P10은 수치 자료의 이진 변환이 구조를 가릴 수 있다고 봤다.[10] P5는 희소 자료에서도 연속 흐름 생성모형을 썼다.[5] 연속 잠재공간에서 후보를 만든 뒤 양자 최적화에는 선택 문제만 맡길 수 있다.
+  첫 실험: 간단한 재료 자료에서 직접 부호화와 잠재공간 부호화를 비교한다.
+  위험: 고전 생성모형이 성능의 대부분을 차지할 수 있다.
+
+* 환경 변화에 강한 광센서 폐루프 설계 (새로움 3/5)
+  안개와 조명 변화는 광학 설계와 자료 표현을 함께 흔든다.
+  P27은 광학층 선별로 가시광 간섭을 줄인 감지기를 설계했다.[27] P25는 고정된 생성기 대신 특징 잔여를 조정했다.[25] 능동학습을 붙여 광학층과 특징 보정기를 번갈아 갱신할 수 있다.[7]
+  첫 실험: 모의 안개 영상과 센서 응답으로 작은 폐루프를 구성한다.
+  위험: 영상 특징의 개선이 센서 물리 성능과 어긋날 수 있다.
+
+## 논문 목록
+[1] Reliability analysis of the world's longest-span CFST arch bridge using an interval-focused active-learning surrogate model | Structures | 2026-10-03 | https://doi.org/10.1016/j.istruc.2026.113125
+[2] An Active Learning Method Based on Bagging and Applied to Surrogate Modelling | Image Processing On Line | 2026-09-23 | https://doi.org/10.5201/ipol.2026.514
+[3] Reliability analysis with parallel active-learning surrogate modeling: Application to girder bridge overturning under extreme vehicle loads | Engineering Structures | 2026-09-23 | https://doi.org/10.1016/j.engstruct.2026.123796
+[4] Toward automated discovery with generative models multimodal learning and closed loop workflows in inverse materials design | Cell Reports Physical Science | 2026-10-01 | https://doi.org/10.1016/j.xcrp.2026.103561
+[5] Physics consistent conditional flow matching model as a plasma physics surrogate model | Machine Learning Science and Technology | 2026-10-01 | https://doi.org/10.1088/2632-2153/aeaf46
+[6] An Active Learning Framework for PFAS-Free Surfactant Discovery in Firefighting Foams | ACS Omega | 2026-09-30 | https://doi.org/10.1021/acsomega.6c07702
+[7] Active Learning For Tractable and Reproducible Pulsed Laser Deposition | Advanced Functional Materials | 2026-09-29 | https://doi.org/10.1002/adfm.78266
+[8] BayesSeg: A Bayesian Optimization Framework for State Segmentation of Electricity Consumption Time Series | Energies | 2026-09-22 | https://doi.org/10.3390/en19194484
+[28] Dual-Prior-Constrained Temporal Inversion and FNO Surrogate-Model-Driven Coordinated Optimization of Drilling Engineering Parameters | Processes | 2026-09-22 | https://doi.org/10.3390/pr14193036
+[29] Agentic High-Dimensional Bayesian Optimization with Hypothesis- and Evidence-Guided Search | arXiv (프리프린트) | 2026-09-28 | http://arxiv.org/abs/2609.34281v1
+[30] Bayesian model updating via streamlined Bayesian active learning cubature | Mechanical Systems and Signal Processing | 2026-10-04 | https://doi.org/10.1016/j.ymssp.2026.114995
+[31] Enhancing Specific Stiffness of Nano‐Architected Materials Through Generative AI and Active Learning | Advanced Science | 2026-10-04 | https://doi.org/10.1002/advs.78140
+[9] Potential of multi-anomalies detection using quantum machine learning | Quantum Machine Intelligence | 2026-10-02 | https://doi.org/10.1007/s42484-026-00448-8
+[10] Encoding Numerical Data for Generative Quantum Machine Learning | Quantum Science and Technology | 2026-10-02 | https://doi.org/10.1088/2058-9565/aeaf7e
+[11] Dynamic depth quantum approximate optimization algorithm for solving constrained shortest path problem | Quantum Machine Intelligence | 2026-09-22 | https://doi.org/10.1007/s42484-026-00442-0
+[12] Q‐LEAP: Millisecond Hyperdimensional Optimization for Full‐Spectrum Optical Metamaterials | Advanced Science | 2026-09-28 | https://doi.org/10.1002/advs.78032
+[13] Compositional Quantum Heuristics for Max-Clique Detection | Quantum Science and Technology | 2026-10-02 | https://doi.org/10.1088/2058-9565/aeaf7b
+[14] Complex-valued Quantum Neural Networks | npj Quantum Information | 2026-09-23 | https://doi.org/10.1038/s41534-026-01369-x
+[15] Noise-enhanced quantum kernels on analog quantum computers for estimating the non-Markovianity from sparse temporal data | Scientific Reports | 2026-09-28 | https://doi.org/10.1038/s41598-026-66035-w
+[16] Deep Reinforcement Learning Inverse Design of Dielectric Metasurfaces Supporting Dual Quasi‐BIC Resonances | Nanophotonics | 2026-09-29 | https://doi.org/10.1002/nap2.70307
+[17] Inverse‐Designed Superchiral Hot Spot in Dielectric Meta‐Cavity Toward Ultra‐Compact Enantioselective Detection | Advanced Optical Materials | 2026-09-29 | https://doi.org/10.1002/adom.71846
+[18] Metasurface Structural Color: From Fundamentals to Applications in Next‐Generation Displays | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72008
+[19] Nonlocal Leaky Mode Metasurfaces for Mode‐, Angle‐, and Polarization‐Multiplexed Holography With Thermal Light | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72007
+[20] Quantifying the Minimal Stable Footprint of Nanophotonic Inverse Design via Geometric Phase Sensitivity | Laser & Photonics Review | 2026-10-03 | https://doi.org/10.1002/lpor.72010
+[21] Nonlocal Reflectarray Metasurfaces with High-Efficiency Spin-Dependent Deflection | ACS Photonics | 2026-10-02 | https://doi.org/10.1021/acsphotonics.6c00612
+[22] Vectorial Complex‐Amplitude Holography and Dual‐Gray Nano‐Printing via Synthesis Metasurfaces | Advanced Optical Materials | 2026-09-28 | https://doi.org/10.1002/adom.71867
+[23] Wide Angular Range Direction‐of‐Arrival Estimation Based on Diffractive Neural Network Integrated Stacked Intelligent Metasurfaces | Advanced Optical Materials | 2026-09-27 | https://doi.org/10.1002/adom.71870
+[32] Artificial Intelligence‐Driven Inverse Design of Singlet Fission Candidates in the Acene family | Advanced Science | 2026-09-27 | https://doi.org/10.1002/advs.76828
+[33] Architected Spatially Deterministic Multiscale Phase Segregation in Block Copolymer Composites for Augmented Radiative Cooling | Advanced Science | 2026-09-27 | https://doi.org/10.1002/advs.77913
+[34] Miniaturized Full-Stokes Spectrometers Based on Low-Correlation Metasurface Array | ACS Photonics | 2026-09-26 | https://doi.org/10.1021/acsphotonics.6c01928
+[35] Wavefront-Engineered Pd Metasurface for Spectrometer-Free Single-Point Photonic Hydrogen Readout | ACS Photonics | 2026-09-25 | https://doi.org/10.1021/acsphotonics.6c01768
+[24] Autonomous Robotic Navigation for Endovascular Brain-Computer Interface Access | arXiv (프리프린트) | 2026-10-02 | http://arxiv.org/abs/2610.03537v1
+[25] The Domain Is a Residue: Adapting Self-Supervised Features, Not Generators | arXiv (프리프린트) | 2026-09-29 | http://arxiv.org/abs/2609.37330v1
+[26] Differentiating Bisimulation Metrics: A Framework for Parametric Markov Chain Fitting via Bicausal Optimal Transport | arXiv (프리프린트) | 2026-09-29 | http://arxiv.org/abs/2609.37239v1
+[27] Visible‐Blind Near‐Infrared Organic Vision Sensors for Imaging in Adverse Environmental Conditions | Advanced Optical Materials | 2026-09-25 | https://doi.org/10.1002/adom.71858
