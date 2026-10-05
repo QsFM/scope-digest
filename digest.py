@@ -11,7 +11,7 @@ CFG = yaml.safe_load(open(os.path.join(HERE, "config.yaml"), encoding="utf-8"))
 MAIL = os.environ.get("OPENALEX_MAILTO", "")
 OA = "https://api.openalex.org/works"
 today = dt.date.today()
-STATUS = {"openalex_429": 0, "openalex_ok": 0, "crossref": 0}
+STATUS = {"openalex_429": 0, "openalex_ok": 0, "crossref": 0, "llm": "미실행"}
 
 # ---------------------------------------------------------------- 수집
 def clean(x): return " ".join(re.sub(r"<[^>]+>", " ", html.unescape(x or "")).split())
@@ -257,24 +257,53 @@ def make_stats(papers, rs, gp):
     if gp: L.append("최근 1년 교차 논문이 적은 조합: " + "; ".join(f"{a} x {b} (교차 {ab}편, 기대 {e:.0f}편)" for r, a, b, ca, cb, ab, e in gp[:4]))
     return "\n".join(L)
 
+def parse_json(txt):
+    txt = (txt or "").strip()
+    txt = re.sub(r"^```(?:json)?\s*|\s*```$", "", txt)
+    try: return json.loads(txt)
+    except Exception:
+        m = re.search(r"\{.*\}", txt, re.S)
+        if m: return json.loads(m.group(0))
+        raise
+
 def call_llm(papers, rs, gp):
-    key = os.environ.get("GEMINI_API_KEY"); L = CFG.get("llm", {})
-    if not key or not L.get("enabled", True) or not papers: return None
+    """성공하면 결과를, 실패하면 None을 돌려주고 STATUS['llm']에 원인(키 값은 제외)을 남긴다."""
+    L = CFG.get("llm", {}); key = (os.environ.get("GEMINI_API_KEY") or "").strip()
+    if not L.get("enabled", True): STATUS["llm"] = "config.yaml에서 llm.enabled 가 꺼져 있음"; return None
+    if not key: STATUS["llm"] = "GEMINI_API_KEY 가 워크플로에 전달되지 않음 (Secret 이름 오타, Environment secrets 에 등록, weekly.yml 의 env 줄 누락 중 하나)"; return None
+    if not papers: STATUS["llm"] = "수집된 논문이 0편"; return None
     ids = pick_for_llm(papers)
     lines = [f"[{k}] 분야={p['topic']} | 저널={p['venue']} | {p['title']} :: {' '.join(re.split(r'(?<=[.!?]) ', p['abstract'])[:5])[:800]}" for k, p in ids.items()]
     lab = "; ".join(f"{n} ({', '.join(v['keywords'][:5])})" for n, v in CFG["topics"].items())
     prompt = PROMPT.format(lab=lab, stats=make_stats(papers, rs, gp), papers="\n".join(lines))
+    errs = []
     for model in L.get("models", ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-2.5-flash"]):
-        try:
-            r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                headers={"x-goog-api-key": key, "Content-Type": "application/json"}, timeout=240,
-                json={"contents": [{"parts": [{"text": prompt}]}],
-                      "generationConfig": {"responseMimeType": "application/json", "temperature": 0.5}})
-            if not r.ok:
-                print("llm", model, r.status_code, r.text[:200].replace("\n", " ")); continue
-            return dict(model=model, data=json.loads(r.json()["candidates"][0]["content"]["parts"][0]["text"]), ids=ids)
-        except Exception as e:
-            print("llm fail", model, type(e).__name__, str(e)[:120])
+        for attempt in range(2):
+            try:
+                r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                    headers={"x-goog-api-key": key, "Content-Type": "application/json"}, timeout=240,
+                    json={"contents": [{"parts": [{"text": prompt}]}],
+                          "generationConfig": {"responseMimeType": "application/json", "temperature": 0.5, "maxOutputTokens": 16000}})
+                if r.status_code in (429, 500, 503) and attempt == 0:
+                    time.sleep(20); continue
+                if not r.ok:
+                    msg = ""
+                    try: msg = r.json().get("error", {}).get("message", "")
+                    except Exception: pass
+                    msg = re.sub(r"AIza[0-9A-Za-z_\-]+", "***", msg)[:160]
+                    errs.append(f"{model}: HTTP {r.status_code} {msg}"); print("llm", model, r.status_code, msg); break
+                j = r.json(); cand = (j.get("candidates") or [{}])[0]
+                txt = "".join(x.get("text", "") for x in cand.get("content", {}).get("parts", []))
+                if not txt:
+                    errs.append(f"{model}: 빈 응답 ({cand.get('finishReason') or j.get('promptFeedback')})"); break
+                data = parse_json(txt)
+                if not isinstance(data, dict) or not data.get("sectors"):
+                    errs.append(f"{model}: 응답 형식 불일치"); break
+                STATUS["llm"] = "ok"
+                return dict(model=model, data=data, ids=ids)
+            except Exception as e:
+                errs.append(f"{model}: {type(e).__name__} {str(e)[:80]}"); print("llm fail", model, type(e).__name__, str(e)[:120]); break
+    STATUS["llm"] = " | ".join(errs) or "원인 불명"
     return None
 
 # ---------------------------------------------------------------- 렌더링
@@ -389,7 +418,7 @@ def build_page(papers, base, gp, rs, res):
     if STATUS["openalex_429"]:
         h.append("<div class='note'><b>수집 경고</b> OpenAlex 일일 호출 예산이 소진되어 Crossref로 일부 보완했습니다. 저장소 Secrets에 OPENALEX_API_KEY(무료)를 등록하면 해결됩니다.</div>")
     if not res:
-        h.append("<div class='note'>이번 호는 AI 서술 없이 알고리즘 집계만으로 만들었습니다. 서술형 리포트와 연구 제안은 GEMINI_API_KEY를 등록하면 나옵니다.</div>")
+        h.append(f"<div class='note'><b>AI 서술 없음</b> 이번 호는 알고리즘 집계만으로 만들었습니다.<br>원인: {esc(STATUS['llm'])}</div>")
     if d.get("overview"):
         h.append(f"<div id='overview' class='kicker'>Overview</div><h2>이번 호 총평</h2>{prose(d['overview'], ids)}")
     for i, (tn, ps) in enumerate(topics):
