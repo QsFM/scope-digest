@@ -16,10 +16,11 @@ jobs:
       - run: python digest.py
         env:
           KHU_API_KEY: ${{ secrets.KHU_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}                   
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
           OPENALEX_MAILTO: ${{ secrets.OPENALEX_MAILTO }}
           PAGE_PASSWORD: ${{ secrets.PAGE_PASSWORD }}
+          OLD_PAGE_PASSWORD: ${{ secrets.OLD_PAGE_PASSWORD }}
           HOME_REPO: ${{ secrets.HOME_REPO }}
           HOME_REPO_TOKEN: ${{ secrets.HOME_REPO_TOKEN }}
       - name: Commit digest
