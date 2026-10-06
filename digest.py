@@ -895,10 +895,10 @@ def push_news(head):
     gh = os.environ.get("GITHUB_REPOSITORY", "")
     base = (os.environ.get("PAGES_URL") or (f"https://{gh.split('/')[0]}.github.io/{gh.split('/')[1]}/" if "/" in gh else "")).rstrip("/") + "/"
     if base == "/": print("PAGES_URL 을 알 수 없어 소식 연동을 건너뜀"); return
-    ko = f"SCOPE Weekly {today} · 주간 논문 리포트 (연구실 구성원 전용, 암호 필요)"
-    en = f"SCOPE Weekly {today} · Weekly paper digest (lab members only, password required)"
+    ko = f"SCOPE Weekly {today} · 주간 논문 리포트"
+    en = f"SCOPE Weekly {today} · Weekly paper digest"
     if N.get("include_headline", False) and head.get(""):
-        ko = f"SCOPE Weekly {today} · {head['']} (암호 필요)"; en = f"SCOPE Weekly {today} · {head.get('-en') or head['']} (password required)"
+        ko = f"SCOPE Weekly {today} · {head['']}"; en = f"SCOPE Weekly {today} · {head.get('-en') or head['']}"
     item = {"date": str(today), "url": f"{base}{today}.html", "text": {"ko": ko, "en": en}}
     path = N.get("file", "assets/js/weekly-news.js"); branch = os.environ.get("HOME_BRANCH", "main")
     api = f"https://api.github.com/repos/{repo}/contents/{path}"
