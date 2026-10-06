@@ -39,3 +39,9 @@
 - 한계: 암호화 파일은 누구나 내려받아 오프라인으로 암호를 대입할 수 있습니다. 무작위 단어 4개 이상(또는 16자 이상) 암호를 쓰세요.
 - 중요: Git 기록에 이전 평문이 남아 있습니다. 저장소가 public이면 기록(history)을 지우거나 저장소를 새로 만드세요.
 - HTTPS(GitHub Pages)에서만 복호화가 동작합니다(file:// 로컬 열기는 브라우저에 따라 실패).
+
+## v6 변경
+- **한글 서술**: 프롬프트를 다시 썼습니다(번역투 금지 목록, 용어 표기표, 고쳐 쓰는 예시, 분야별 4문단 14-18문장, 연구 제안에 `연구 설계`·`성공 기준` 추가). 초안 뒤에 교정 호출을 한 번 더 합니다(`llm.polish`). 교정본이 구조·인용 번호·분량을 지키지 못하면 초안을 씁니다. `llm.tone: polite`면 ~합니다 체입니다.
+- **중복 제외**: 이전 호에 실린 논문(DOI, arXiv 번호, 제목이 같은 것)은 다음 호에서 뺍니다. 기록은 `data/seen.json`(공개되지 않는 폴더)입니다. 같은 날짜 재실행은 영향이 없습니다. 최초 1회는 이미 발행된 암호화 txt 문서에서 기록을 복원합니다. 끄려면 `dedupe_history: false`.
+- **암호 교체**: Secret `OLD_PAGE_PASSWORD`에 직전 암호를 넣고 `PAGE_PASSWORD`를 새 암호로 바꾼 뒤 실행하면 `docs/`의 기존 페이지가 모두 새 암호로 다시 암호화됩니다. 성공하면 `data/pwcheck.json`에 지문이 저장되어 다음 주부터는 점검을 건너뜁니다. 성공 후 `OLD_PAGE_PASSWORD`는 지우세요.
+- **양자 분야**: `Quantum Algorithms & NISQ`(신규)와 `Quantum Computing for Practical Applications`(응용으로 재정의) 두 분야로 나누고, 둘 다 arXiv `quant-ph`를 함께 검색합니다(`preprint.extra`).
