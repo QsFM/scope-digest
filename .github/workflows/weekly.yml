@@ -1,7 +1,7 @@
 name: weekly-digest
 on:
   schedule:
-    - cron: "0 23 * * 3"   # 목요일 08:00 KST
+    - cron: "17 22 * * 3"   # 목요일 07:17 KST
   workflow_dispatch:
 permissions:
   contents: write
