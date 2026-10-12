@@ -8,5 +8,10 @@
   "ko": "탐색 예산과 실제 검증을 함께 설계하는 연구가 중심으로 떠올랐다",
   "en": "Research now focuses on jointly designing search budgets and real-world validation",
   "has_en": true
+ },
+ "2026-10-12": {
+  "ko": "작은 데이터와 제한된 자원을 함께 다루는 설계가 중심으로 떠올랐다",
+  "en": "Designs that address both small data and limited resources have become a central focus",
+  "has_en": true
  }
 }
