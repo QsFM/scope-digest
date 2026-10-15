@@ -13,5 +13,10 @@
   "ko": "작은 데이터와 제한된 자원을 함께 다루는 설계가 중심으로 떠올랐다",
   "en": "Designs that address both small data and limited resources have become a central focus",
   "has_en": true
+ },
+ "2026-10-15": {
+  "ko": "표본 수보다 표본의 가치와 잡음 내성이 성능을 좌우한다",
+  "en": "Sample value and noise robustness matter more than sample count",
+  "has_en": true
  }
 }
