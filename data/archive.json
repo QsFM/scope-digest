@@ -18,5 +18,10 @@
   "ko": "표본 수보다 표본의 가치와 잡음 내성이 성능을 좌우한다",
   "en": "Sample value and noise robustness matter more than sample count",
   "has_en": true
+ },
+ "2026-10-22": {
+  "ko": "적응형 선택과 물리 지식이 표본 효율을 좌우한다",
+  "en": "Adaptive selection and physical knowledge determine sample efficiency",
+  "has_en": true
  }
 }
