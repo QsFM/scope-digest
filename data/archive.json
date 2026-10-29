@@ -23,5 +23,10 @@
   "ko": "적응형 선택과 물리 지식이 표본 효율을 좌우한다",
   "en": "Adaptive selection and physical knowledge determine sample efficiency",
   "has_en": true
+ },
+ "2026-10-29": {
+  "ko": "대리 모델 기반 능동학습과 하이브리드 양자 알고리즘의 실용적 한계 극복 흐름",
+  "en": "Surrogate-Based Active Learning and Practical Limits of Hybrid Quantum Algorithms",
+  "has_en": true
  }
 }
